@@ -1,5 +1,5 @@
 import { blake2bInit, blake2bUpdate, blake2bFinal } from 'blakejs'
-import { toHexString } from './byte'
+import { toHexString } from '../utils/byte.js'
 
 export async function toStreamChunk(file, fn) {
     let reader = file.stream().getReader()

@@ -4,6 +4,10 @@
 
 基于 Web Worker 实现的后台计算方法，提供了 Vite 插件，可让 Vite 项目中的 JS 模块多线程运行
 
+Vite 插件的独立版本[Rollup-Plugin-Worker-Plus](https://www.npmjs.com/package/rollup-plugin-worker-plus)
+1. npm i -D rollup-plugin-worker-plus
+2. [Rollup-Plugin-Worker-Plus](https://www.npmjs.com/package/rollup-plugin-worker-plus) 为纯开发插件
+
 ### 注意
 
 只有在生产版本才有效，开发版本 Vite 不会处理 node_modules 中的 Web Worker 文件，因此开发环境无效
