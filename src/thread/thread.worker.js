@@ -16,16 +16,8 @@ function decode(args) {
 }
 
 self.onmessage = async function (event) {
-    const { id, module, method, args } = event.data
+    const { id, module, method, args, isUrl } = event.data
     try {
-        const _module = modules[module]
-        if (!_module) {
-            throw new Error(module + ' module does not exist')
-        }
-        const _method = _module[method]
-        if (!_method) {
-            throw new Error(method + ' method does not exist')
-        }
         const context = {
             emit: (name, ...args) =>
                 self.postMessage({
@@ -35,10 +27,17 @@ self.onmessage = async function (event) {
                     args
                 })
         }
+        let data
+        if (isUrl) {
+            const _module = await import(/* @vite-ignore */ module)
+            data = await _module[method]?.call(context, ...args)
+        } else {
+            data = await invoke(context, module, method, decode(args))
+        }
         self.postMessage({
             id,
             type: 'SUCCESS',
-            data: await _method.call(context, ...decode(args))
+            data: data
         })
     } catch (error) {
         self.postMessage({
@@ -52,4 +51,17 @@ self.onmessage = async function (event) {
             type: 'FINALLY'
         })
     }
+}
+
+export function getOfThrow(value, msg) {
+    if (value) {
+        return value
+    }
+    throw new Error(msg)
+}
+
+export async function invoke(context, module, method, args) {
+    const _module = getOfThrow(modules[module], module + ' module does not exist')
+    const _method = getOfThrow(_module[method], method + ' method does not exist')
+    return await _method.call(context, ...args)
 }

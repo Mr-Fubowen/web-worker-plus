@@ -1,3 +1,5 @@
+import { invoke } from './thread.worker'
+
 let id = 0
 let running = new Map()
 const defaultWorker = create()
@@ -63,8 +65,12 @@ function encode(args) {
         return item
     })
 }
+
 export function run(module, method, args, options) {
-    const { timeout, isNewThread } = options || {}
+    const { timeout, isNewThread, isMainThread = false, isUrl = false } = options || {}
+    if (isMainThread) {
+        return invoke(this, module, method, args)
+    }
     const worker = isNewThread ? create() : defaultWorker
     return new Promise((resolve, reject) => {
         let timer
@@ -81,7 +87,8 @@ export function run(module, method, args, options) {
             id: _id,
             module,
             method,
-            args: params
+            args: params,
+            isUrl
         })
         running.set(_id, {
             args: params,
@@ -100,5 +107,25 @@ export function runAs(module, method, ...args) {
 export function runAsNew(module, method, ...args) {
     return run(module, method, args, {
         isNewThread: true
+    })
+}
+export function runAsUrl(url, method, ...args) {
+    return run(url, method, args, {
+        isNewThread: false,
+        isAsync: true,
+        isUrl: true
+    })
+}
+
+export function runAsMain(module, method, ...args) {
+    return run(module, method, args, {
+        isNewThread: false,
+        isAsync: false
+    })
+}
+export function runAsNewMain(module, method, ...args) {
+    return run(module, method, args, {
+        isNewThread: true,
+        isAsync: false
     })
 }

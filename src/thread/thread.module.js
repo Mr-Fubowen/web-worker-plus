@@ -1,1 +1,1 @@
-export * as hashCode from '../utils/hashCode.js'
+export * as hashCode from '../modules/hashCode.js'

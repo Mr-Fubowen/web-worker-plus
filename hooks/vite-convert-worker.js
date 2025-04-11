@@ -16,7 +16,7 @@ async function createWorker(options) {
         Object.assign(opts, options)
     }
     const files = await fs.readdir(opts.workerPath)
-    const modules = ['export * as hashCode from "../utils/hashCode.js"']
+    const modules = ['export * as hashCode from "../modules/hashCode.js"']
     for (const it of files) {
         if (it.endsWith('.worker.js')) {
             continue

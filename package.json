@@ -1,6 +1,6 @@
 {
     "name": "web-worker-enhance",
-    "version": "1.1.9",
+    "version": "1.2.3",
     "description": "基于 Web Worker 实现的后台计算方法，提供了 Vite 钩子，可让 Vite 项目中的 JS 模块多线程运行",
     "type": "module",
     "main": "src/index.js",
@@ -24,7 +24,8 @@
     "keywords": [
         "Vite",
         "Web Worker",
-        "rollup-plugin"
+        "rollup-plugin",
+        "Vite-plugin"
     ],
     "author": "fubowen",
     "license": "MIT",

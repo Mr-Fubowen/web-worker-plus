@@ -46,11 +46,12 @@ export default defineConfig({
     2. toStreamChunk(file, fn)
 
 ```js
-import { Thread } from 'web-worker-plus'
+import { Thread } from 'web-worker-enhance'
 
 await Thread.run('hashCode', 'hashCode', [file,progress=>{}], {
     isNewThread: false,
-    timeout: -1
+    timeout: -1,
+    isMainThread: false
 })
 await Thread.runAs('hashCode', 'hashCode', file,progress=>{})
 await Thread.runAsNew('hashCode', 'hashCode', file,progress=>{})
